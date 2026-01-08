@@ -1,0 +1,14 @@
+com/libraryapi/libraryapi/controller/AutorController.class
+com/libraryapi/libraryapi/controller/dto/AutorDTO.class
+com/libraryapi/libraryapi/repository/LivroRepository.class
+com/libraryapi/libraryapi/model/Autor.class
+com/libraryapi/libraryapi/validator/AutorValidator.class
+com/libraryapi/libraryapi/Application.class
+com/libraryapi/libraryapi/repository/AutorRepository.class
+com/libraryapi/libraryapi/controller/dto/ErroCampo.class
+com/libraryapi/libraryapi/service/AutorService.class
+com/libraryapi/libraryapi/exceptions/OperacaoNaoPermitidaException.class
+com/libraryapi/libraryapi/model/GeneroLivro.class
+com/libraryapi/libraryapi/model/Livro.class
+com/libraryapi/libraryapi/controller/dto/ErroResposta.class
+com/libraryapi/libraryapi/exceptions/RegistroDuplicadoException.class

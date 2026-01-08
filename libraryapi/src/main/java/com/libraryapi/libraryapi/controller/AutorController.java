@@ -2,13 +2,13 @@ package com.libraryapi.libraryapi.controller;
 
 import com.libraryapi.libraryapi.controller.dto.AutorDTO;
 import com.libraryapi.libraryapi.controller.dto.ErroResposta;
+import com.libraryapi.libraryapi.controller.mappers.AutorMapper;
 import com.libraryapi.libraryapi.exceptions.OperacaoNaoPermitidaException;
 import com.libraryapi.libraryapi.exceptions.RegistroDuplicadoException;
 import com.libraryapi.libraryapi.model.Autor;
 import com.libraryapi.libraryapi.service.AutorService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -26,11 +26,13 @@ public class AutorController {
 
 
     private final AutorService service;
+    private final AutorMapper mapper;
 
     @PostMapping
-    public ResponseEntity<Object> salvar(@RequestBody @Valid AutorDTO autor) {
+    public ResponseEntity<Object> salvar(@RequestBody @Valid AutorDTO dto) {
         try {
-            Autor autorEntidade = autor.mapearAutor();
+            // Autor autorEntidade = autor.mapearAutor();
+            Autor autorEntidade = mapper.toEntity(dto);
 
             service.salvar(autorEntidade);
 
@@ -56,7 +58,8 @@ public class AutorController {
         if(autorOptional.isPresent()) {
             Autor autor = autorOptional.get();
 
-            AutorDTO dto = new AutorDTO(autor.getId(), autor.getNome(), autor.getNacionalidade(), autor.getDataNascimento());
+            // AutorDTO dto = new AutorDTO(autor.getId(), autor.getNome(), autor.getNacionalidade(), autor.getDataNascimento());
+            AutorDTO dto = mapper.toDTO(autor);
             return ResponseEntity.ok(dto);
         }
 
@@ -89,11 +92,13 @@ public class AutorController {
         // List<Autor> resultado = service.buscaFiltrada(nome, nacionalidade);
            List<Autor> resultado = service.pesquisaExample(nome, nacionalidade);
 
-        List<AutorDTO> lista = resultado.stream().map(autor -> new AutorDTO(autor.getId(),
-                                                           autor.getNome(),
-                                                           autor.getNacionalidade(),
-                                                           autor.getDataNascimento()))
-                                                          .collect(Collectors.toList());
+//        List<AutorDTO> lista = resultado.stream().map(autor -> new AutorDTO(autor.getId(),
+//                                                           autor.getNome(),
+//                                                           autor.getNacionalidade(),
+//                                                           autor.getDataNascimento()))
+//                                                          .collect(Collectors.toList());
+
+        List<AutorDTO> lista = resultado.stream().map(mapper::toDTO).collect(Collectors.toList());
 
         return ResponseEntity.ok(lista);
     }
