@@ -30,7 +30,6 @@ public class AutorController {
 
     @PostMapping
     public ResponseEntity<Object> salvar(@RequestBody @Valid AutorDTO dto) {
-        try {
             // Autor autorEntidade = autor.mapearAutor();
             Autor autorEntidade = mapper.toEntity(dto);
 
@@ -43,10 +42,7 @@ public class AutorController {
                     .toUri();
 
             return ResponseEntity.created(location).build();
-        } catch (RegistroDuplicadoException e) {
-            var erroDTO = ErroResposta.conflito(e.getMessage());
-            return ResponseEntity.status(erroDTO.status()).body(erroDTO);
-        }
+
     }
 
     @GetMapping("/{id}")
@@ -68,7 +64,6 @@ public class AutorController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deletar(@PathVariable("id") String id) {
-        try {
             var uuid = UUID.fromString(id);
 
             Optional<Autor> autorOptional = service.buscarPorId(uuid);
@@ -79,10 +74,7 @@ public class AutorController {
 
             service.deletar(autorOptional.get());
             return ResponseEntity.noContent().build();
-        }catch (OperacaoNaoPermitidaException e) {
-            var erro = ErroResposta.erroPadrao(e.getMessage());
-            return ResponseEntity.status(erro.status()).body(erro);
-        }
+
     }
 
     @GetMapping

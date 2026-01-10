@@ -33,7 +33,7 @@ public class Autor {
     @Column(name = "data_nascimento", nullable = false)
     private LocalDate dataNascimento;
 
-    @OneToMany(mappedBy = "autor", fetch = FetchType.LAZY, cascade =  CascadeType.ALL)
+    @OneToMany(mappedBy = "autor", fetch = FetchType.LAZY)
     private List<Livro> livros;
 
     @Column(name = "data_cadastro")
