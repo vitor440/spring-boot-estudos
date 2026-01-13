@@ -28,7 +28,6 @@ public class SpecLivros {
 
     public static Specification<Livro> likeNomeAutor(String nomeAutor) {
 
-
         return (root, query, cb) -> {
             Join<Object, Object> autor = root.join("autor", JoinType.LEFT);
 

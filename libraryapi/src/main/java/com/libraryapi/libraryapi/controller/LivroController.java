@@ -10,6 +10,7 @@ import com.libraryapi.libraryapi.model.Livro;
 import com.libraryapi.libraryapi.service.LivroService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,17 +39,19 @@ public class LivroController implements GenericController{
     }
 
     @GetMapping
-    public ResponseEntity<List<ResultadoPesquisaLivroDTO>> pesquisa(
+    public ResponseEntity<Page<ResultadoPesquisaLivroDTO>> pesquisa(
             @RequestParam(value = "isbn", required = false) String isbn,
             @RequestParam(value = "titulo", required = false) String titulo,
             @RequestParam(value = "ano", required = false) Integer ano,
             @RequestParam(value = "nome-autor", required = false) String nomeAutor,
-            @RequestParam(value = "genero", required = false)GeneroLivro genero
+            @RequestParam(value = "genero", required = false)GeneroLivro genero,
+            @RequestParam(value = "num-pagina", defaultValue = "0") Integer numPagina,
+            @RequestParam(value = "tam-pagina", defaultValue = "10") Integer tamPagina
             ){
 
-        List<Livro> resultado = livroService.pesquisa(isbn, titulo, ano, nomeAutor, genero);
+        Page<Livro> resultado = livroService.pesquisa(isbn, titulo, ano, nomeAutor, genero, numPagina, tamPagina);
 
-        List<ResultadoPesquisaLivroDTO> resultadoDTO = resultado.stream().map(mapper::toDTO).collect(Collectors.toList());
+        Page<ResultadoPesquisaLivroDTO> resultadoDTO = resultado.map(mapper::toDTO);
         return ResponseEntity.ok(resultadoDTO);
     }
 
